@@ -9,15 +9,26 @@ from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.graphics import Color, Rectangle, RoundedRectangle
 from kivy.animation import Animation
+from kivy.core.text import LabelBase
+import os
+
+# Bangun path secara portable untuk menghindari escape sequence issues pada Windows
+MAIN_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+FONT_PATH = os.path.join(MAIN_DIR, "Assets", "fonts", "Montserrat-Bold.ttf")
+FONT_PATH = os.path.join(MAIN_DIR, "Assets", "fonts", "Poppins-Medium.ttf")
+LabelBase.register(name="montserrat", fn_regular=FONT_PATH)
+LabelBase.register(name="poppins",fn_regular=FONT_PATH)
 
 class GadgetHomeScreen(MDScreen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.current_image = 0
+        # Gunakan folder Assets/Images di dalam `Main`
+        IMG_DIR = os.path.join(MAIN_DIR, "Assets", "Images")
         self.images = [
-            "D:\Project Pemdas Octatech test\Assets\loginpage\Latarbelakang.jpg",
-            "D:\Project Pemdas Octatech test\Assets\loginpage\Latarbelakang.jpg",
-            "D:\Project Pemdas Octatech test\Assets\loginpage\Latarbelakang.jpg"
+            os.path.join(IMG_DIR, "latar_belakang_login_dummy.jpg"),
+            os.path.join(IMG_DIR, "latar_belakang_login_dummy.jpg"),
+            os.path.join(IMG_DIR, "latar_belakang_login_dummy.jpg")
         ]
         
         # Background gradient
@@ -51,7 +62,8 @@ class GadgetHomeScreen(MDScreen):
             text_color=(1, 1, 1, 1),
             bold=True,
             size_hint_y= 0.4,
-            height=120
+            height=120,
+            font_name="montserrat"
         )
         
         subtitle = MDLabel(
@@ -61,7 +73,8 @@ class GadgetHomeScreen(MDScreen):
             font_style='Body',
             role='large',
             size_hint_y=None,
-            height=60
+            height=60,
+            font_name="poppins"
         )
         
         header_layout.add_widget(title)

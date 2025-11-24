@@ -11,9 +11,24 @@ from kivymd.uix.button import MDButton, MDButtonText
 from kivymd.uix.textfield import MDTextField, MDTextFieldHintText
 from kivy.uix.image import Image
 from kivymd.uix.snackbar import MDSnackbar, MDSnackbarText
+from kivy.core.text import LabelBase
+import os
 # Nama file database, pastikan konsisten dengan signup.py
 DB_NAME = "user_data.db"
 import sqlite3
+
+# Bangun path secara portable untuk menghindari escape sequence issues pada Windows
+MAIN_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+FONT_PATH = os.path.join(MAIN_DIR, "Assets", "fonts", "Montserrat-Bold.ttf")
+FONT_PATH = os.path.join(MAIN_DIR, "Assets", "fonts", "Poppins-Bold.ttf")
+FONT_PATH=os.path.join(MAIN_DIR,"Assets", "fonts","LeagueSpartan-Bold.ttf")
+FONT_PATH=os.path.join(MAIN_DIR,"assets","fonts","Roboto-Light.ttf")
+FONT_PATH=os.path.join(MAIN_DIR,"Assets","fonts","Montserrat-Arabic-SemiBold.otf")
+LabelBase.register(name="LeaguaeSpartan_Bold",fn_regular=FONT_PATH)
+LabelBase.register(name="Montserrat-Arabic-SemiBold.otf",fn_regular=FONT_PATH)
+LabelBase.register(name="Roboto_Light",fn_regular=FONT_PATH)
+LabelBase.register(name="montserrat", fn_regular=FONT_PATH)
+LabelBase.register(name="poppins_bold",fn_regular=FONT_PATH)
 # Mengatur ukuran window
 #Window.size = (1000, 600)
 
@@ -69,7 +84,8 @@ class LoginScreen(MDScreen):
             role="medium",
             bold=True,
             theme_text_color="Custom",
-            text_color=(0.1, 0.1, 0.1, 1)
+            text_color=(0.1, 0.1, 0.1, 1),
+            font_name="poppins_bold"
         )
 
         # Menyusun Bagian Kiri
@@ -104,7 +120,8 @@ class LoginScreen(MDScreen):
             bold=True,
             halign="left",
             theme_text_color="Custom",
-            text_color=(1, 1, 1, 1)
+            text_color=(1, 1, 1, 1),
+            font_name="LeaguaeSpartan_Bold"
         )
         
         subtitle_label = MDLabel(
@@ -114,7 +131,8 @@ class LoginScreen(MDScreen):
             halign="left",
             theme_text_color="Custom",
             text_color=(0.7, 0.7, 0.8, 1),
-            size_hint_y=None
+            size_hint_y=None,
+            font_name = "poppins_bold"
         )
         subtitle_label.height = subtitle_label.texture_size[1] # Trik agar tinggi label pas
 
@@ -124,11 +142,13 @@ class LoginScreen(MDScreen):
             theme_bg_color="Custom",
             fill_color_normal=(1, 1, 1, 1),
             fill_color_focus=(1, 1, 1, 1),
-            radius=[10, 10, 10, 10]
+            radius=[10, 10, 10, 10],
+            
         )
         username_hint = MDTextFieldHintText(
             text="Username",
-            text_color_normal=(0.5, 0.5, 0.5, 1)
+            text_color_normal=(0.5, 0.5, 0.5, 1),
+            font_name="roboto_light"
         )
         self.username_field.add_widget(username_hint)
 
@@ -143,7 +163,8 @@ class LoginScreen(MDScreen):
         )
         password_hint = MDTextFieldHintText(
             text="Password",
-            text_color_normal=(0.5, 0.5, 0.5, 1)
+            text_color_normal=(0.5, 0.5, 0.5, 1),
+            font_name="roboto_light"
         )
         self.password_field.add_widget(password_hint)
 
@@ -167,7 +188,8 @@ class LoginScreen(MDScreen):
             text_color=(1, 1, 1, 1),
             pos_hint={"center_x": .5, "center_y": .5},
             font_style="Title",
-            role="medium"
+            role="medium",
+            font_name="monserrat-arabic-semisbold.otf"
         )
         btn_signin.add_widget(btn_text)
         btn_signin
@@ -185,7 +207,8 @@ class LoginScreen(MDScreen):
             theme_text_color="Custom",
             text_color=(0.7, 0.7, 0.8, 1),
             font_style="Body",
-            role="small"
+            role="small",
+            font_name="monserrat-arabic-semisbold.otf"
         )
         
         # Tombol Sign Up (Text Button)
@@ -195,7 +218,8 @@ class LoginScreen(MDScreen):
             theme_text_color="Custom",
             pos_hint={"center_x": .5, "center_y": .5},
             text_color=(1, 0.8, 0, 1),
-            bold=True
+            bold=True,
+             font_name="roboto_light"
         )
         btn_signup.add_widget(btn_signup_text)
         btn_signup.bind(on_release = self.go_to_signup)

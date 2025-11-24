@@ -34,6 +34,19 @@ from kivymd.uix.textfield import (
 from kivymd.uix.button import MDButton, MDButtonText
 from kivymd.uix.fitimage import FitImage
 from kivy.uix.floatlayout import FloatLayout
+from kivy.core.text import LabelBase
+# Bangun path secara portable untuk menghindari escape sequence issues pada Windows
+MAIN_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+FONT_PATH = os.path.join(MAIN_DIR, "Assets", "fonts", "Montserrat-Bold.ttf")
+FONT_PATH = os.path.join(MAIN_DIR, "Assets", "fonts", "Poppins-Bold.ttf")
+FONT_PATH=os.path.join(MAIN_DIR,"Assets", "fonts","LeagueSpartan-Bold.ttf")
+FONT_PATH=os.path.join(MAIN_DIR,"assets","fonts","Roboto-Light.ttf")
+FONT_PATH=os.path.join(MAIN_DIR,"Assets","fonts","Montserrat-Arabic-SemiBold.otf")
+LabelBase.register(name="LeaguaeSpartan_Bold",fn_regular=FONT_PATH)
+LabelBase.register(name="Montserrat-Arabic-SemiBold.otf",fn_regular=FONT_PATH)
+LabelBase.register(name="Roboto_Light",fn_regular=FONT_PATH)
+LabelBase.register(name="montserrat", fn_regular=FONT_PATH)
+LabelBase.register(name="poppins_bold",fn_regular=FONT_PATH)
 
 
 
@@ -90,7 +103,8 @@ class SignupPage(MDScreen):
             theme_text_color="Custom",
             text_color=(1, 1, 1, 1),
             bold=True,
-            adaptive_height=True
+            adaptive_height=True,
+            font_name="LeaguaeSpartan_Bold"
         )
 
         label_subtitle = MDLabel(
@@ -100,7 +114,8 @@ class SignupPage(MDScreen):
             role="small",
             theme_text_color="Custom",
             text_color=(0.8, 0.8, 0.8, 1),
-            adaptive_height=True
+            adaptive_height=True,
+            font_name="poppins_bold"
         )
 
         # Input Nama
@@ -111,7 +126,8 @@ class SignupPage(MDScreen):
             theme_bg_color="Custom",
             fill_color_normal=(1, 1, 1, 1),
             fill_color_focus=(1, 1, 1, 1),
-            radius=[10, 10, 10, 10]
+            radius=[10, 10, 10, 10],
+            font_name="roboto_light"
         )
 
         # Input Username
@@ -122,7 +138,8 @@ class SignupPage(MDScreen):
             theme_bg_color="Custom",
             fill_color_normal=(1, 1, 1, 1),
             fill_color_focus=(1, 1, 1, 1),
-            radius=[10, 10, 10, 10]
+            radius=[10, 10, 10, 10],
+            font_name="roboto_light"
             
         )
 
@@ -135,7 +152,8 @@ class SignupPage(MDScreen):
             fill_color_normal=(1, 1, 1, 1),
             fill_color_focus=(1, 1, 1, 1),
             radius=[10, 10, 10, 10],
-            password=True
+            password=True,
+            font_name="roboto_light"
             
         )    
 
@@ -145,12 +163,14 @@ class SignupPage(MDScreen):
                 text="Buat Akun",
                 theme_text_color="Custom",
                 text_color=(1, 1, 1, 1),
-                pos_hint={"center_x": 0.5, "center_y": 0.5}
+                pos_hint={"center_x": 0.5, "center_y": 0.5},
+                font_name="monserrat-arabic-semisbold.otf"
             ),
             style="filled",
             pos_hint={"center_x": 0.5},
             height="40dp",
             size_hint_x=1,
+            
         )
 
         # --- MENYUSUN LAYOUT ---
@@ -169,8 +189,25 @@ class SignupPage(MDScreen):
 
 
         # Tombol Kembali
-        btn_back = MDButton(style="text", pos_hint={"center_x": .5})
-        btn_back.add_widget(MDButtonText(text="Kembali ke Login", theme_text_color="Custom", text_color=(1,1,1,0.7)))
+        btn_back = MDButton(
+            style="text",
+            pos_hint={"center_x": 0.5},
+            size_hint=(None, None),
+            height=dp(45),          # tambahin tinggi
+            width=dp(200),          # lebar tombol
+           # padding=(dp(10), dp(10)),
+        )
+
+        btn_back.add_widget(
+             MDButtonText(
+                text="Kembali ke Login",
+                theme_text_color="Custom",
+                text_color=(1, 1, 1, 0.9),
+                font_size="18sp",      # gedein teks
+                font_name="poppins_bold"
+            )
+        )
+
         btn_back.bind(on_release=self.back_to_login)
         card_content.add_widget(btn_back)
 

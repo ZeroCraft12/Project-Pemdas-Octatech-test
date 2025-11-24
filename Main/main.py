@@ -25,6 +25,7 @@ from kivymd.uix.label import MDLabel
 
 #module code
 
+
 DB_NAME = "users.db"
 
 Window.size = (1000, 600)
