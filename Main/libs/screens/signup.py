@@ -62,7 +62,7 @@ class SignupPage(MDScreen):
         
         bg_image = FitImage(
                 # Gunakan r"..." (raw string) untuk path Windows agar backslash aman
-            source=r"D:\Project Pemdas Octatech test\Main\Assets\Images\latar_belakang_signup.jpg",
+            source=r"D:\Project Pemdas Octatech test\Main\Assets\Images\sign up page.jpg",
             radius=[0, 0, 0, 0]
             )
         self.add_widget(bg_image) # Gunakan self, bukan screen
@@ -204,7 +204,8 @@ class SignupPage(MDScreen):
                 theme_text_color="Custom",
                 text_color=(1, 1, 1, 0.9),
                 font_size="18sp",      # gedein teks
-                font_name="poppins_bold"
+                font_name="poppins_bold",
+                pos_hint={"center_x": 0.5, "center_y": 0.5},
             )
         )
 

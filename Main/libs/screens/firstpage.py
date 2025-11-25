@@ -11,6 +11,7 @@ from kivy.graphics import Color, Rectangle, RoundedRectangle
 from kivy.animation import Animation
 from kivy.core.text import LabelBase
 import os
+from kivymd.uix.fitimage import FitImage
 
 # Bangun path secara portable untuk menghindari escape sequence issues pada Windows
 MAIN_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -32,13 +33,19 @@ class GadgetHomeScreen(MDScreen):
         ]
         
         # Background gradient
-        with self.canvas.before:
-            Color(0.09, 0.29, 0.44, 1)
-            self.bg_rect = Rectangle(pos=self.pos, size=self.size)
-            Color(0.07, 0.45, 0.53, 1)
-            self.bg_rect2 = Rectangle(pos=(self.width * 0.5, 0), size=(self.width * 0.5, self.height))
-        
-        self.bind(pos=self.update_bg, size=self.update_bg)
+        #with self.canvas.before:
+        #   Color(0.09, 0.29, 0.44, 1)
+        #    self.bg_rect = Rectangle(pos=self.pos, size=self.size)
+        #    Color(0.07, 0.45, 0.53, 1)
+        #    self.bg_rect2 = Rectangle(pos=(self.width * 0.5, 0), size=(self.width * 0.5, self.height))
+        bg_image = FitImage(
+                # Gunakan r"..." (raw string) untuk path Windows agar backslash aman
+            source=r"D:\Project Pemdas Octatech test\Main\Assets\Images\welcome page.png",
+            radius=[0, 0, 0, 0]
+            )
+        self.add_widget(bg_image)
+        # Binding update_bg dikomentari karena background gradient juga dikomentari
+        # self.bind(pos=self.update_bg, size=self.update_bg)
         
         # Main layout
         main_layout = MDBoxLayout(

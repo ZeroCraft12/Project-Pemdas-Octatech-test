@@ -52,7 +52,7 @@ class LoginScreen(MDScreen):
         
         # Gambar Background
         bg_image = FitImage(
-            source= "D:\Project Pemdas Octatech test\Main\Assets\Images\latar_belakang_login_dummy.jpg",
+            source= "D:\Project Pemdas Octatech test\Main\Assets\Images\login page.jpg",
             radius=[0, 0, 0, 0]
         )
 
@@ -257,7 +257,7 @@ class LoginScreen(MDScreen):
 
         if result:
             # Jika sukses, pindah ke screen data_app
-            self.manager.current = "data_app"
+            self.manager.current = "home_screen"
             self.password_field.text = ""
         else:
             self.show_snackbar("Gagal Login!")

@@ -11,6 +11,7 @@ from Main.libs.screens.login import LoginScreen
 from Main.libs.screens.signup import SignupPage
 from Main.libs.screens.firstpage import GadgetHomeScreen
 from Main.libs.screens.dumyhome import DataApp
+from Main.libs.screens.home import HomeScreen
 
 
 from kivy.core.window import Window
@@ -45,7 +46,7 @@ class OctaTechApp(MDApp):
 
         sm.add_widget(SignupPage(name="signup_screen"))
 
-        sm.add_widget(DataApp(name="data_app"))
+        sm.add_widget(HomeScreen(name="home_screen"))
         
         return sm
     def create_table(self):
