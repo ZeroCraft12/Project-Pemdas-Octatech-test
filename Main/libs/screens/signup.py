@@ -62,7 +62,7 @@ class SignupPage(MDScreen):
         
         bg_image = FitImage(
                 # Gunakan r"..." (raw string) untuk path Windows agar backslash aman
-            source=r"D:\Project Pemdas Octatech test\Main\Assets\Images\sign up page.jpg",
+            source=r"C:\Users\lenovo\OneDrive\Dokumen\Desktop\Project-Pemdas-Octatech-test\Main\assets\Images\sign up page.jpg",
             radius=[0, 0, 0, 0]
             )
         self.add_widget(bg_image) # Gunakan self, bukan screen
@@ -152,7 +152,7 @@ class SignupPage(MDScreen):
             fill_color_normal=(1, 1, 1, 1),
             fill_color_focus=(1, 1, 1, 1),
             radius=[10, 10, 10, 10],
-            password=True,
+            password=False,
             font_name="roboto_light"
             
         )    

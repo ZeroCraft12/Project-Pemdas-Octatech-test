@@ -1,84 +1,156 @@
 import sys
 import os
+from kivy.core.window import Window
+from kivy.clock import Clock
+from kivy.uix.image import Image
+from kivymd.uix.screenmanager import MDScreenManager
+from kivy.uix.screenmanager import FadeTransition
 
-# Jika file dijalankan langsung (python Main/main.py), tambahkan folder project root
-# ke sys.path supaya impor absolut `Main.*` ditemukan.
+# Setup Path
 project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if project_root not in sys.path:
     sys.path.insert(0, project_root)
 
+# --- IMPORTS ---
 from Main.libs.screens.login import LoginScreen
 from Main.libs.screens.signup import SignupPage
-from Main.libs.screens.firstpage import GadgetHomeScreen
-from Main.libs.screens.dumyhome import DataApp
+# from Main.libs.screens.firstpage import GadgetHomeScreen # HAPUS INI
+from Main.libs.screens.firstpage import TeamScreen, HeroScreen # Import screen baru
 from Main.libs.screens.home import HomeScreen
-from kivy.properties import ListProperty
 from Main.libs.screens.reviewscreen import ReviewScreen, DetailScreen, ProductCard, INITIAL_PRODUCTS
 from Main.libs.screens.tabunganscreen import SavingsScreen
 from Main.libs.screens.rekomendasi_gadget import GadgetRecommendationScreen
 from Main.libs.screens.wishlistscreen import WishlistScreen
-#from Main.libs.screens.profil import ProfileScreen
 
-
-
-from kivy.core.window import Window
+from kivy.properties import ListProperty
 import sqlite3
-from kivy.metrics import dp
 from kivymd.app import MDApp
 from kivymd.uix.screen import MDScreen
-from kivymd.uix.screenmanager import MDScreenManager
 from kivymd.uix.boxlayout import MDBoxLayout
-from kivymd.uix.floatlayout import MDFloatLayout
-from kivymd.uix.label import MDLabel
 from kivy.lang import Builder
 
-#module code
-
-
 DB_NAME = "users.db"
+Window.size = (1920, 1080   ) # Ukuran disesuaikan tampilan HP agar pas dengan desain
 
-Window.size = (1000, 600)
+# =========================================
+# CLASS SPLASH SCREEN (Tambahan Baru)
+# =========================================
 
+# 1. SPLASH OCTA (2.png -> 3.png)
+class OctaSplash1(MDScreen):
+    def on_enter(self, *args):
+        Clock.schedule_once(self.go_next, 1.5) # Auto pindah setelah 1.5 detik
+
+    def go_next(self, dt):
+        self.manager.transition = FadeTransition(duration=0.5)
+        self.manager.current = "octa_2"
+
+    def build_ui(self): # Helper jika ingin build manual
+        pass 
+
+class OctaSplash2(MDScreen):
+    def on_touch_down(self, touch):
+        # Klik layar pindah ke Unesa Splash
+        if self.collide_point(*touch.pos):
+            self.manager.transition = FadeTransition(duration=0.5)
+            self.manager.current = "unesa_1"
+            return True
+        return super().on_touch_down(touch)
+
+# 2. SPLASH UNESA (4.png -> 5.png)
+class UnesaSplash1(MDScreen):
+    def on_enter(self, *args):
+        Clock.schedule_once(self.go_next, 1.5)
+
+    def go_next(self, dt):
+        self.manager.transition = FadeTransition(duration=0.5)
+        self.manager.current = "unesa_2"
+
+class UnesaSplash2(MDScreen):
+    def on_touch_down(self, touch):
+        # Klik layar pindah ke Team Screen (dari firstpage.py)
+        if self.collide_point(*touch.pos):
+            self.manager.transition = FadeTransition(duration=0.5)
+            self.manager.current = "team_screen"
+            return True
+        return super().on_touch_down(touch)
+
+
+# =========================================
+# MAIN APP CLASS
+# =========================================
 class OctaTechApp(MDApp):
     products = ListProperty(INITIAL_PRODUCTS)
 
     def build(self):
         self.theme_cls.theme_style = "Light"
-        #init_db() # Pastikan DB siap
-
-        # SCREEN MANAGER: Pengatur lalu lintas halaman
-        self.sm = MDScreenManager()
         
-        # Tambahkan layar-layar ke manager
-        self.sm.add_widget(GadgetHomeScreen(name ="first_page"))
+        # Gunakan FadeTransition agar perpindahan gambar halus
+        self.sm = MDScreenManager(transition=FadeTransition())
+        
+        # --- 1. SETUP SPLASH SCREEN (Manual Build UI Image) ---
+        # Screen: Octa 1 (Icon)
+        s1 = OctaSplash1(name="octa_1")
+        layout1 = MDBoxLayout(md_bg_color=[1,1,1,1]) # Putih
+        layout1.add_widget(Image(source="2.png", allow_stretch=True, keep_ratio=True))
+        s1.add_widget(layout1)
+        self.sm.add_widget(s1)
 
+        # Screen: Octa 2 (Text)
+        s2 = OctaSplash2(name="octa_2")
+        layout2 = MDBoxLayout(md_bg_color=[1,1,1,1])
+        layout2.add_widget(Image(source="3.png", allow_stretch=True, keep_ratio=True))
+        s2.add_widget(layout2)
+        self.sm.add_widget(s2)
+
+        # Screen: Unesa 1 (Logo)
+        s3 = UnesaSplash1(name="unesa_1")
+        layout3 = MDBoxLayout(md_bg_color=[1,1,1,1])
+        layout3.add_widget(Image(source="4.png", allow_stretch=True, keep_ratio=True))
+        s3.add_widget(layout3)
+        self.sm.add_widget(s3)
+
+        # Screen: Unesa 2 (DS)
+        s4 = UnesaSplash2(name="unesa_2")
+        layout4 = MDBoxLayout(md_bg_color=[1,1,1,1])
+        layout4.add_widget(Image(source="5.png", allow_stretch=True, keep_ratio=True))
+        s4.add_widget(layout4)
+        self.sm.add_widget(s4)
+
+        # --- 2. SETUP SCREEN DARI FIRSTPAGE.PY ---
+        self.sm.add_widget(TeamScreen(name="team_screen")) # Slide Tim
+        
+        # Hero Screen perlu logika tombol "Selanjutnya" -> Login
+        hero = HeroScreen(name="hero_screen")
+        # Kita bind tombol 'next' di HeroScreen untuk pindah ke Login
+        # (Asumsi di firstpage.py tombolnya punya id atau logic)
+        # Cara simpel: Timpa method on_touch atau logic tombol di firstpage
+        self.sm.add_widget(hero)
+
+        # --- 3. SETUP SCREEN LAINNYA ---
         self.sm.add_widget(LoginScreen(name="login_screen"))
-
         self.sm.add_widget(SignupPage(name="signup_screen"))
-
         self.sm.add_widget(HomeScreen(name="home_screen"))
-        
         self.sm.add_widget(SavingsScreen(name="savings_screen"))
-        
         self.sm.add_widget(ReviewScreen(name="review_screen"))
-        
         self.sm.add_widget(DetailScreen(name="review_detail_screen"))
-
         self.sm.add_widget(GadgetRecommendationScreen(name="rekomendasi_gadget"))
-
         self.sm.add_widget(WishlistScreen(name="wishlist_screen"))
-        #self.root.add_widget(GadgetRecommendationScreen(name='rekomendasi_gadget'))
+        
         Builder.load_file("Main/libs/screens/profile.kv")
         from Main.libs.screens.profilescreen import ProfileScreen
         self.sm.add_widget(ProfileScreen(name="profile_screen"))
 
-        
         return self.sm
 
     def on_start(self):
-        self.filter_products("")
+        # Filter awal kosong agar semua produk tampil (jika ada logic review)
+        if self.root.has_screen('review_screen'):
+            self.filter_products("")
 
     def filter_products(self, query):
+        if not self.root.has_screen('review_screen'): return
+        
         grid = self.root.get_screen('review_screen').ids.product_grid
         grid.clear_widgets()
         query = query.lower()
@@ -110,8 +182,11 @@ class OctaTechApp(MDApp):
     def go_back(self):
         self.root.transition.direction = 'right'
         self.root.current = 'review_screen'
-        search_input = self.root.get_screen('review_screen').ids.search_input.text
-        self.filter_products(search_input)
+        try:
+            search_input = self.root.get_screen('review_screen').ids.search_input.text
+            self.filter_products(search_input)
+        except:
+            pass
 
     def add_review(self, product_id, rating, text):
         for product in self.products:
@@ -126,7 +201,6 @@ class OctaTechApp(MDApp):
                 break
 
     def create_table(self):
-        # Hanya membuat tabel, tidak mengurusi insert/select
         with sqlite3.connect(DB_NAME) as conn:
             cursor = conn.cursor()
             cursor.execute("""
@@ -140,10 +214,6 @@ class OctaTechApp(MDApp):
             conn.commit()
 
 if __name__ == "__main__":
-    # Inisialisasi DB sebelum aplikasi jalan
     from Main.libs.screens.signup import init_db
     init_db()
     OctaTechApp().run()
-
-
-
