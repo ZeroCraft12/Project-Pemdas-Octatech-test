@@ -2,6 +2,8 @@ from kivy_deps import sdl2, glew
 from kivymd import hooks_path as kivymd_hooks_path
 import os
 
+# -*- mode: python ; coding: utf-8 -*-
+
 # --- DEFINE ASSETS ---
 # Include all KV files and asset folders
 # Format: (Source Path, Destination Path)
@@ -51,7 +53,7 @@ exe = EXE(
     bootloader_ignore_signals=False,
     strip=False,
     upx=True,
-    console=False, # Set to True if you want to see error logs in console during dev
+    console=False,
     disable_windowed_traceback=False,
     argv_emulation=False,
     target_arch=None,
